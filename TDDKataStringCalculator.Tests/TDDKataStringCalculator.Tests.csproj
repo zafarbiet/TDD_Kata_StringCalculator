@@ -54,6 +54,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TDDKataStringCalculator.Code\TDDKataStringCalculator.Code.csproj">
+      <Project>{245f51b0-61fe-4027-ac76-2f15a6af423d}</Project>
+      <Name>TDDKataStringCalculator.Code</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

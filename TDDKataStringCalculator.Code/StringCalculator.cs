@@ -8,15 +8,46 @@ namespace TDDKataStringCalculator.Code
 {
     public class StringCalculator
     {
+        private readonly ILogger _logger;
+        private readonly IWebservice _webService;
+
+        public StringCalculator(ILogger logger, IWebservice webService)
+        {
+            _logger = logger;
+            _webService = webService;
+        }
         public int Add(string number)
         {
             if (string.IsNullOrEmpty(number))
+            {
+                try
+                {
+                    _logger.Write(0);
+                }
+                catch (Exception ex)
+                {
+                    _webService.RecordExceptions(ex.Message);
+                    throw;
+                }
+                
                 return 0;
+            }
             var numberForSum = number.Replace('\n', ',').Split(',');
             ReturnDelimitedNumbers(ref numberForSum);
-            var numberForAdd = numberForSum.Where(c=>!string.IsNullOrEmpty(c)).Select(int.Parse).ToArray();
+            var numberForAdd = numberForSum.Where(c => !string.IsNullOrEmpty(c)).Select(int.Parse).ToArray();
             ValidateNegetiveNumbers(numberForAdd);
-            return numberForAdd.Where(c => c < 1001).Sum();
+            var additionResult = numberForAdd.Where(c => c < 1001).Sum();
+            try
+            {
+                _logger.Write(additionResult);
+            }
+            catch (Exception ex)
+            {
+                _webService.RecordExceptions(ex.Message);
+                throw;
+            }
+            
+            return additionResult;
         }
 
         private static void ValidateNegetiveNumbers(int[] numberForSum)
